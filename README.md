@@ -26,6 +26,12 @@ Or install it yourself as:
 $ envly set USERNAME=chrisenytc SECRET=keepitsecret --project envly --key=topsecretkey
 ```
 
+#### List projects
+
+```bash
+$ envly list
+```
+
 #### Show environment variables
 
 ```bash
