@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+
+require 'envly'
+require 'commander/import'
+
+program :name, 'Envly'
+program :version, '0.1.0'
+program :description, 'Manage sensitive environment variables in your development environment'
+
+command :set do |c|
+  c.syntax = 'envly set [variables]'
+  c.description = 'Set one or more environment variables to a project'
+  c.option '--project <project_name>', String, 'The project name'
+  c.option '--key <key>', String, 'The key used to encrypted this project'
+  c.action do |args, options|
+    if options.project.nil?
+      puts 'missing option: --project'
+      exit 0
+    end
+
+    if options.key.nil?
+      puts 'missing option: --key'
+      exit 0
+    end
+
+    unless args.size > 0
+      puts 'You need to set at lest one environment variable'
+      exit 0
+    end
+
+    Envly.set options.key, options.project, args
+
+    puts 'Environment variables encrypted and saved successfully'
+  end
+end
+
+command :show do |c|
+  c.syntax = 'envly show'
+  c.description = 'Show encrypted environment variables o a project'
+  c.option '--project <project_name>', String, 'The project name'
+  c.option '--key <key>', String, 'The key used to encrypted this project'
+  c.action do |_args, options|
+    if options.project.nil?
+      puts 'missing option: --project'
+      exit 0
+    end
+
+    if options.key.nil?
+      puts 'missing option: --key'
+      exit 0
+    end
+
+    puts "Environment variables of #{options.project}"
+    puts
+    puts Envly.show options.key, options.project
+  end
+end
+
+command :load do |c|
+  c.syntax = 'envly load'
+  c.description = 'Load encrypted environment variables of a project'
+  c.option '--project <project_name>', String, 'The project name'
+  c.option '--key <key>', String, 'The key used to encrypted this project'
+  c.action do |_args, options|
+    if options.project.nil?
+      puts 'missing option: --project'
+      exit 0
+    end
+
+    if options.key.nil?
+      puts 'missing option: --key'
+      exit 0
+    end
+
+    begin
+      puts Envly.load options.key, options.project
+    rescue e
+      exit 0
+    end
+  end
+end
