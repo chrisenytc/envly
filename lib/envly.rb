@@ -34,6 +34,13 @@ module Envly
 		end
 	end
 
+	def list()
+		Dir.foreach(PATH) do |item|
+			next if item == '.' or item == '..'
+			puts "Project => #{item.split('.')[0]}"
+		end
+	end
+
 	def show(key, project)
 		begin
 			file = File.read File.join PATH, project + '.envly'

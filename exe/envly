@@ -34,12 +34,22 @@ command :set do |c|
   end
 end
 
+command :list do |c|
+  c.syntax = 'envly list'
+  c.description = 'List all projects'
+  c.action do |args, options|
+    puts "Project list"
+    puts
+    Envly.list
+	end
+end
+
 command :show do |c|
   c.syntax = 'envly show'
   c.description = 'Show encrypted environment variables o a project'
   c.option '--project <project_name>', String, 'The project name'
   c.option '--key <key>', String, 'The key used to encrypted this project'
-  c.action do |_args, options|
+  c.action do |args, options|
     if options.project.nil?
       puts 'missing option: --project'
       exit 0
@@ -61,7 +71,7 @@ command :load do |c|
   c.description = 'Load encrypted environment variables of a project'
   c.option '--project <project_name>', String, 'The project name'
   c.option '--key <key>', String, 'The key used to encrypted this project'
-  c.action do |_args, options|
+  c.action do |args, options|
     if options.project.nil?
       puts 'missing option: --project'
       exit 0
